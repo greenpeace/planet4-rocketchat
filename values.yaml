@@ -1,0 +1,11 @@
+---
+host: rocketchat.p4.greenpeace.org
+mongodb:
+  mongodbUsername: DUMMY_USE_CONFIG_SECRET
+  mongodbPassword: DUMMY_USE_CONFIG_SECRET
+  mongodbDatabase: DUMMY_USE_CONFIG_SECRET
+
+ingress:
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+  enabled: true
