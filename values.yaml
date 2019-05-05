@@ -4,8 +4,13 @@ mongodb:
   mongodbUsername: DUMMY_USE_CONFIG_SECRET
   mongodbPassword: DUMMY_USE_CONFIG_SECRET
   mongodbDatabase: DUMMY_USE_CONFIG_SECRET
+  persistence:
+    storageClass: ssd
 
 ingress:
   annotations:
     kubernetes.io/ingress.class: "traefik"
   enabled: true
+
+persistence:
+  storageClass: ssd
