@@ -1,9 +1,9 @@
 ---
-host: rocketchat.p4.greenpeace.org
+host: chat.greenpeace.org
 mongodb:
   mongodbUsername: DUMMY_USE_CONFIG_SECRET
   mongodbPassword: DUMMY_USE_CONFIG_SECRET
-  mongodbDatabase: DUMMY_USE_CONFIG_SECRET
+  mongodbDatabase: meteor
   persistence:
     storageClass: ssd
 
