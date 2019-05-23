@@ -2,7 +2,7 @@ HELM_RELEASE := p4-rocketchat-test
 NAMESPACE ?= rocketchat-test
 
 CHART_NAME ?= stable/rocketchat
-CHART_VERSION ?= 0.3.4
+CHART_VERSION ?= 1.1.2
 DEV_CLUSTER ?= p4-development
 DEV_PROJECT ?= planet-4-151612
 DEV_ZONE ?= us-central1-a
