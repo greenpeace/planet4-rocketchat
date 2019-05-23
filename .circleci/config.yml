@@ -1,12 +1,54 @@
+---
+defaults: &defaults
+  docker:
+    - image: gcr.io/planet-4-151612/circleci-base:latest
+
 version: 2
+
 jobs:
-  build:
+  lint:
+    <<: *defaults
     steps:
       - checkout
+      - run: make lint | tee /tmp/lint.log
       - run:
-          command: echo "Here we are. Test 1 successfull"
+          name: Notify failure
+          when: on_fail
+          command: |
+            TYPE="Test" \
+            EXTRA_TEXT="```$(cat /tmp/lint.log)```" \
+            notify-job-failure.sh
+
+  prod:
+    <<: *defaults
+    environment:
+      GOOGLE_PROJECT_ID: planet-4-151612
+    steps:
+      - checkout
+      - run: activate-gcloud-account.sh
+      - run: make | tee /tmp/deploy.log
+      - run:
+          name: Notify failure
+          when: on_fail
+          command: |
+            TYPE="Deploy" \
+            EXTRA_TEXT="```$(cat /tmp/deploy.log)```" \
+            notify-job-failure.sh
+      - run: |
+          TYPE="Deploy" \
+          EXTRA_TEXT="```$(make history)```" \
+          notify-job-success.sh
+
 workflows:
   version: 2
-  main:
+  commit:
     jobs:
-      - build
+      - lint
+      - prod:
+          context: org-global
+          requires:
+            - lint
+          filters:
+            branches:
+              only:
+                - master

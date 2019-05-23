@@ -1,5 +1,5 @@
-HELM_RELEASE := p4-rocketchat
-NAMESPACE ?= rocketchat
+HELM_RELEASE := p4-rocketchat-test
+NAMESPACE ?= rocketchat-test
 
 CHART_NAME ?= stable/rocketchat
 CHART_VERSION ?= 0.3.4
