@@ -1,0 +1,12 @@
+version: 2
+jobs:
+  build:
+    steps:
+      - checkout
+      - run:
+          command: echo "Here we are. Test 1 successfull"
+workflows:
+  version: 2
+  main:
+    jobs:
+      - build
