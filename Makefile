@@ -10,3 +10,7 @@ fnord:
 		--version $(CHART_VERSION) \
 		-f values.yaml \
 		$(CHART_NAME)
+
+lint:
+	@find . -type f -name '*.yml' | xargs yamllint
+	@find . -type f -name '*.yaml' | xargs yamllint
