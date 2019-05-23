@@ -12,6 +12,9 @@ fnord:
 ifndef CI
 	$(error Please commit and push, this is intended to be run in a CI environment)
 endif
+	sed -i -e "s/CI_MONGO_DB_USERNAME/${CI_MONGO_DB_USERNAME}/g" values.yaml
+	sed -i -e "s/CI_MONGO_DB_PASSWORD/${CI_MONGO_DB_PASSWORD}/g" values.yaml
+	sed -i -e "s/CI_MONGO_DB_ROOT_PASSWORD/${CI_MONGO_DB_ROOT_PASSWORD}/g" values.yaml
 	gcloud config set project $(DEV_PROJECT)
 	gcloud container clusters get-credentials $(DEV_CLUSTER) --zone $(DEV_ZONE) --project $(DEV_PROJECT)
 	helm init --client-only
@@ -25,3 +28,6 @@ endif
 lint:
 	@find . -type f -name '*.yml' | xargs yamllint
 	@find . -type f -name '*.yaml' | xargs yamllint
+
+history:
+	helm history traefik --max=5
