@@ -43,7 +43,8 @@ workflows:
   version: 2
   commit:
     jobs:
-      - lint
+      - lint:
+          context: org-global
       - prod:
           context: org-global
           requires:
