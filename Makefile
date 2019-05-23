@@ -3,8 +3,19 @@ NAMESPACE ?= rocketchat-test
 
 CHART_NAME ?= stable/rocketchat
 CHART_VERSION ?= 0.3.4
+DEV_CLUSTER ?= p4-development
+DEV_PROJECT ?= planet-4-151612
+DEV_ZONE ?= us-central1-a
+
 
 fnord:
+ifndef CI
+	$(error Please commit and push, this is intended to be run in a CI environment)
+endif
+	gcloud config set project $(DEV_PROJECT)
+	gcloud container clusters get-credentials $(DEV_CLUSTER) --zone $(DEV_ZONE) --project $(DEV_PROJECT)
+	helm init --client-only
+	helm repo update
 	helm upgrade --install --force --wait $(HELM_RELEASE) \
 		--namespace=$(NAMESPACE) \
 		--version $(CHART_VERSION) \
