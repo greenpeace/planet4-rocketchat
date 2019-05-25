@@ -1,5 +1,5 @@
 ---
-host: rocketchat.p4.greenpeace.org
+host: chat.greenpeace.org
 mongodb:
   mongodbUsername: CI_MONGO_DB_USERNAME
   mongodbPassword: CI_MONGO_DB_PASSWORD
