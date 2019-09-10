@@ -7,8 +7,7 @@ DEV_CLUSTER ?= p4-development
 DEV_PROJECT ?= planet-4-151612
 DEV_ZONE ?= us-central1-a
 
-
-fnord:
+deploy:
 ifndef CI
 	$(error Please commit and push, this is intended to be run in a CI environment)
 endif
