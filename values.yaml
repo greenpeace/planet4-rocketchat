@@ -1,10 +1,13 @@
 ---
 host: chat.greenpeace.org
+replicaCount: 2
 mongodb:
   mongodbUsername: CI_MONGO_DB_USERNAME
   mongodbPassword: CI_MONGO_DB_PASSWORD
   mongodbRootPassword: CI_MONGO_DB_ROOT_PASSWORD
   mongodbDatabase: meteor
+  replicaSet:
+    enabled: true
   persistence:
     storageClass: ssd
 smtp:
