@@ -44,4 +44,4 @@ lint:
 	@find . -type f -name '*.yaml' | xargs yamllint
 
 history:
-	helm history traefik --max=5
+	helm history $(HELM_RELEASE) --max=5
