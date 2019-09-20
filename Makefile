@@ -1,3 +1,7 @@
+SHELL := /bin/bash
+
+.EXPORT_ALL_VARIABLES:
+
 HELM_RELEASE := p4-rocketchat
 NAMESPACE ?= rocketchat
 
@@ -6,6 +10,8 @@ CHART_VERSION ?= 1.1.12
 DEV_CLUSTER ?= p4-development
 DEV_PROJECT ?= planet-4-151612
 DEV_ZONE ?= us-central1-a
+
+BACKUP_BUCKET := $(HELM_RELEASE)-backup
 
 deploy:
 ifndef CI
@@ -23,6 +29,15 @@ endif
 		--version $(CHART_VERSION) \
 		-f values.yaml \
 		$(CHART_NAME)
+
+bucket:
+	gsutil ls "gs://$(BACKUP_BUCKET)" || { \
+		gsutil mb "gs://$(BACKUP_BUCKET)"; \
+		gsutil lifecycle set lifecycle.json "gs://$(BACKUP_BUCKET)"; \
+	}
+
+backup: bucket
+	./backup.sh
 
 lint:
 	@find . -type f -name '*.yml' | xargs yamllint
