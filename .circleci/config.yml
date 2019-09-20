@@ -2,6 +2,8 @@
 defaults: &defaults
   docker:
     - image: greenpeaceinternational/circleci-base:latest
+  environment:
+    GOOGLE_PROJECT_ID: planet-4-151612
 
 version: 2
 
@@ -21,8 +23,6 @@ jobs:
 
   prod:
     <<: *defaults
-    environment:
-      GOOGLE_PROJECT_ID: planet-4-151612
     steps:
       - checkout
       - run: activate-gcloud-account.sh
@@ -39,6 +39,20 @@ jobs:
           EXTRA_TEXT="```$(make history)```" \
           notify-job-success.sh
 
+  backup:
+    <<: *defaults
+    steps:
+      - checkout
+      - run: activate-gcloud-account.sh
+      - run: make backup
+      - run:
+          name: Notify failure
+          when: on_fail
+          command: |
+            TYPE="Deploy" \
+            EXTRA_TEXT="```$(cat /tmp/deploy.log)```" \
+            notify-job-failure.sh
+
 workflows:
   version: 2
   commit:
@@ -49,6 +63,23 @@ workflows:
           context: org-global
           requires:
             - lint
+          filters:
+            branches:
+              only:
+                - master
+
+  nightly:
+    jobs:
+      - backup:
+          context: org-global
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^backup.*/
+    triggers:
+      - schedule:
+          cron: "23 1 * * *"
           filters:
             branches:
               only:
