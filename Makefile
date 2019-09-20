@@ -17,6 +17,15 @@ deploy:
 ifndef CI
 	$(error Please commit and push, this is intended to be run in a CI environment)
 endif
+ifndef CI_MONGO_DB_USERNAME
+	$(error CI_MONGO_DB_USERNAME is not set)
+endif
+ifndef CI_MONGO_DB_PASSWORD
+	$(error CI_MONGO_DB_PASSWORD is not set)
+endif
+ifndef CI_MONGO_DB_ROOT_PASSWORD
+	$(error CI_MONGO_DB_ROOT_PASSWORD is not set)
+endif
 	sed -i -e "s/CI_MONGO_DB_USERNAME/${CI_MONGO_DB_USERNAME}/g" values.yaml
 	sed -i -e "s/CI_MONGO_DB_PASSWORD/${CI_MONGO_DB_PASSWORD}/g" values.yaml
 	sed -i -e "s/CI_MONGO_DB_ROOT_PASSWORD/${CI_MONGO_DB_ROOT_PASSWORD}/g" values.yaml
