@@ -67,7 +67,15 @@ workflows:
             branches:
               only:
                 - master
-
+  backup-tag:
+    jobs:
+      - backup:
+          context: org-global
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^backup.*/
   nightly:
     jobs:
       - backup:
