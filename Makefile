@@ -51,6 +51,7 @@ backup: bucket
 lint:
 	@find . -type f -name '*.yml' | xargs yamllint
 	@find . -type f -name '*.yaml' | xargs yamllint
+	@circleci config validate
 
 history:
 	helm history $(HELM_RELEASE) --max=5
