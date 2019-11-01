@@ -2,6 +2,11 @@
 # shellcheck disable=2016
 set -exuo pipefail
 
+[[ -z "${NAMESPACE:-}" ]] && NAMESPACE=rocketchat
+[[ -z "${HELM_RELEASE:-}" ]] && HELM_RELEASE=p4-rocketchat
+[[ -z "${BACKUP_BUCKET:-}" ]] && BACKUP_BUCKET=${HELM_RELEASE}-backup
+
+
 function finish() {
   kubectl -n "${NAMESPACE}" exec -ti "$pod"  -- sh -c 'rm -fr /tmp/rocketchat-db-backup.gz'
 }
@@ -18,6 +23,6 @@ trap finish EXIT
 
 kubectl -n "${NAMESPACE}" exec -ti "$pod"  -- sh -c 'mongodump --oplog --gzip --archive=/tmp/rocketchat-db-backup.gz -u $MONGODB_PRIMARY_ROOT_USER -p $MONGODB_ROOT_PASSWORD'
 
-kubectl -n "${NAMESPACE}" cp "$pod":/tmp/rocketchat-db-backup.gz .
+kubectl -n "${NAMESPACE}" cp "$pod":/tmp/rocketchat-db-backup.gz rocketchat-db-backup.gz
 
 gsutil cp rocketchat-db-backup.gz "gs://$BACKUP_BUCKET"

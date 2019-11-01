@@ -72,14 +72,9 @@ workflows:
     jobs:
       - backup:
           context: org-global
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^backup.*/
     triggers:
       - schedule:
-          cron: "23 1 * * *"
+          cron: "23 2 * * *"
           filters:
             branches:
               only:
